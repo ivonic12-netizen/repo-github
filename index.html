@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Monitoring IoT Kandang Ayam</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ChartJS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      font-family: Arial;
+      background-image: url('kandang.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      margin: 0;
+      padding: 0;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 15px;
+      margin: 15px auto;
+      width: 95%;
+      max-width: 600px;
+      border-radius: 15px;
+    }
+
+    @media (max-width: 600px) {
+      h2, h3 {
+        font-size: 18px;
+      }
+      p {
+        font-size: 14px;
+      }
+      canvas {
+        width: 100% !important;
+        height: auto !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+  <h2>Monitoring Kandang Ayam</h2>
+  <p>Suhu: <b id="suhu">29</b> °C</p>
+  <p>Kelembaban: <b id="hum">70</b> %</p>
+  <p>Kipas: <b id="kipas">ON</b></p>
+  <p>Lampu: <b id="lampu">OFF</b></p>
+  <p>Servo: <b id="servo">OFF</b></p>
+  <p>Waktu: <b id="waktu"></b></p>
+</div>
+
+<div class="card">
+  <h3>Grafik Suhu</h3>
+  <canvas id="grafikSuhu"></canvas>
+</div>
+
+<div class="card">
+  <h3>Grafik Kelembaban</h3>
+  <canvas id="grafikHum"></canvas>
+</div>
+
+<script>
+/* ================= JAM REALTIME ================= */
+function updateWaktu(){
+  const now = new Date();
+  document.getElementById("waktu").innerHTML =
+    now.toLocaleDateString("id-ID") + " " +
+    now.toLocaleTimeString("id-ID");
+}
+setInterval(updateWaktu, 1000);
+updateWaktu();
+
+/* ================= DATA DUMMY ================= */
+const waktu = [
+  "10:00","10:05","10:10","10:15","10:20"
+];
+
+const suhu = [28, 29, 30, 31, 30];
+const hum  = [65, 68, 70, 72, 71];
+
+/* ================= GRAFIK ================= */
+new Chart(document.getElementById('grafikSuhu'), {
+  type: 'line',
+  data: {
+    labels: waktu,
+    datasets: [{
+      label: 'Suhu (°C)',
+      data: suhu,
+      borderWidth: 2,
+      fill: false
+    }]
+  }
+});
+
+new Chart(document.getElementById('grafikHum'), {
+  type: 'line',
+  data: {
+    labels: waktu,
+    datasets: [{
+      label: 'Kelembaban (%)',
+      data: hum,
+      borderWidth: 2,
+      fill: false
+    }]
+  }
+});
+</script>
+
+</body>
+</html>
